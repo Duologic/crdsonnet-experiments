@@ -1,0 +1,3314 @@
+{
+  "compose": {
+    "$schema": "http://json-schema.org/draft/2019-09/schema#",
+    "_name": "compose",
+    "additionalProperties": false,
+    "definitions": {
+      "blkio_limit": {
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "rate": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "blkio_weight": {
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "config": {
+        "additionalProperties": false,
+        "id": "#/definitions/config",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "external": {
+            "properties": {
+              "name": {
+                "deprecated": true,
+                "type": "string"
+              }
+            },
+            "type": [
+              "boolean",
+              "object"
+            ]
+          },
+          "file": {
+            "type": "string"
+          },
+          "labels": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "name": {
+            "type": "string"
+          },
+          "template_driver": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "constraints": {
+        "service": {
+          "anyOf": [
+            {
+              "required": [
+                "build"
+              ]
+            },
+            {
+              "required": [
+                "image"
+              ]
+            }
+          ],
+          "id": "#/definitions/constraints/service",
+          "properties": {
+            "build": {
+              "required": [
+                "context"
+              ]
+            }
+          }
+        }
+      },
+      "deployment": {
+        "additionalProperties": false,
+        "id": "#/definitions/deployment",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "endpoint_mode": {
+            "type": "string"
+          },
+          "labels": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "placement": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "constraints": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "max_replicas_per_node": {
+                "type": "integer"
+              },
+              "preferences": {
+                "items": {
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^x-": {}
+                  },
+                  "properties": {
+                    "spread": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "replicas": {
+            "type": "integer"
+          },
+          "resources": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "limits": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "cpus": {
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  },
+                  "memory": {
+                    "type": "string"
+                  },
+                  "pids": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              "reservations": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "cpus": {
+                    "type": [
+                      "number",
+                      "string"
+                    ]
+                  },
+                  "devices": {
+                    "$ref": "#/definitions/devices"
+                  },
+                  "generic_resources": {
+                    "$ref": "#/definitions/generic_resources"
+                  },
+                  "memory": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "restart_policy": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "condition": {
+                "type": "string"
+              },
+              "delay": {
+                "format": "duration",
+                "type": "string"
+              },
+              "max_attempts": {
+                "type": "integer"
+              },
+              "window": {
+                "format": "duration",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "rollback_config": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "delay": {
+                "format": "duration",
+                "type": "string"
+              },
+              "failure_action": {
+                "type": "string"
+              },
+              "max_failure_ratio": {
+                "type": "number"
+              },
+              "monitor": {
+                "format": "duration",
+                "type": "string"
+              },
+              "order": {
+                "enum": [
+                  "start-first",
+                  "stop-first"
+                ],
+                "type": "string"
+              },
+              "parallelism": {
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "update_config": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "delay": {
+                "format": "duration",
+                "type": "string"
+              },
+              "failure_action": {
+                "type": "string"
+              },
+              "max_failure_ratio": {
+                "type": "number"
+              },
+              "monitor": {
+                "format": "duration",
+                "type": "string"
+              },
+              "order": {
+                "enum": [
+                  "start-first",
+                  "stop-first"
+                ],
+                "type": "string"
+              },
+              "parallelism": {
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "devices": {
+        "id": "#/definitions/devices",
+        "items": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {}
+          },
+          "properties": {
+            "capabilities": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "count": {
+              "type": [
+                "string",
+                "integer"
+              ]
+            },
+            "device_ids": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "driver": {
+              "type": "string"
+            },
+            "options": {
+              "$ref": "#/definitions/list_or_dict"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "generic_resources": {
+        "id": "#/definitions/generic_resources",
+        "items": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {}
+          },
+          "properties": {
+            "discrete_resource_spec": {
+              "additionalProperties": false,
+              "patternProperties": {
+                "^x-": {}
+              },
+              "properties": {
+                "kind": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "healthcheck": {
+        "additionalProperties": false,
+        "id": "#/definitions/healthcheck",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "disable": {
+            "type": "boolean"
+          },
+          "interval": {
+            "format": "duration",
+            "type": "string"
+          },
+          "retries": {
+            "type": "number"
+          },
+          "start_period": {
+            "format": "duration",
+            "type": "string"
+          },
+          "test": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "timeout": {
+            "format": "duration",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "list_of_strings": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
+      "list_or_dict": {
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "patternProperties": {
+              ".+": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          }
+        ]
+      },
+      "network": {
+        "additionalProperties": false,
+        "id": "#/definitions/network",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "attachable": {
+            "type": "boolean"
+          },
+          "driver": {
+            "type": "string"
+          },
+          "driver_opts": {
+            "patternProperties": {
+              "^.+$": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "enable_ipv6": {
+            "type": "boolean"
+          },
+          "external": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "name": {
+                "deprecated": true,
+                "type": "string"
+              }
+            },
+            "type": [
+              "boolean",
+              "object"
+            ]
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "ipam": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "config": {
+                "items": {
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^x-": {}
+                  },
+                  "properties": {
+                    "aux_addresses": {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^.+$": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "gateway": {
+                      "type": "string"
+                    },
+                    "ip_range": {
+                      "type": "string"
+                    },
+                    "subnet": {
+                      "format": "subnet_ip_address",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "driver": {
+                "type": "string"
+              },
+              "options": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^.+$": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "labels": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "secret": {
+        "additionalProperties": false,
+        "id": "#/definitions/secret",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "driver": {
+            "type": "string"
+          },
+          "driver_opts": {
+            "patternProperties": {
+              "^.+$": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "environment": {
+            "type": "string"
+          },
+          "external": {
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": [
+              "boolean",
+              "object"
+            ]
+          },
+          "file": {
+            "type": "string"
+          },
+          "labels": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "name": {
+            "type": "string"
+          },
+          "template_driver": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "service": {
+        "additionalProperties": false,
+        "id": "#/definitions/service",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "blkio_config": {
+            "additionalProperties": false,
+            "properties": {
+              "device_read_bps": {
+                "items": {
+                  "$ref": "#/definitions/blkio_limit"
+                },
+                "type": "array"
+              },
+              "device_read_iops": {
+                "items": {
+                  "$ref": "#/definitions/blkio_limit"
+                },
+                "type": "array"
+              },
+              "device_write_bps": {
+                "items": {
+                  "$ref": "#/definitions/blkio_limit"
+                },
+                "type": "array"
+              },
+              "device_write_iops": {
+                "items": {
+                  "$ref": "#/definitions/blkio_limit"
+                },
+                "type": "array"
+              },
+              "weight": {
+                "type": "integer"
+              },
+              "weight_device": {
+                "items": {
+                  "$ref": "#/definitions/blkio_weight"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "build": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "args": {
+                    "$ref": "#/definitions/list_or_dict"
+                  },
+                  "cache_from": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "cache_to": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "context": {
+                    "type": "string"
+                  },
+                  "dockerfile": {
+                    "type": "string"
+                  },
+                  "extra_hosts": {
+                    "$ref": "#/definitions/list_or_dict"
+                  },
+                  "isolation": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "$ref": "#/definitions/list_or_dict"
+                  },
+                  "network": {
+                    "type": "string"
+                  },
+                  "no_cache": {
+                    "type": "boolean"
+                  },
+                  "pull": {
+                    "type": "boolean"
+                  },
+                  "secrets": {
+                    "$ref": "#/definitions/service_config_or_secret"
+                  },
+                  "shm_size": {
+                    "type": [
+                      "integer",
+                      "string"
+                    ]
+                  },
+                  "ssh": {
+                    "$ref": "#/definitions/list_or_dict"
+                  },
+                  "tags": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "target": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            ]
+          },
+          "cap_add": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "cap_drop": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "cgroup_parent": {
+            "type": "string"
+          },
+          "command": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "configs": {
+            "$ref": "#/definitions/service_config_or_secret"
+          },
+          "container_name": {
+            "type": "string"
+          },
+          "cpu_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "cpu_percent": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "cpu_period": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "cpu_quota": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "cpu_rt_period": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "cpu_rt_runtime": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "cpu_shares": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "cpus": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "cpuset": {
+            "type": "string"
+          },
+          "credential_spec": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "config": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string"
+              },
+              "registry": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "depends_on": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/list_of_strings"
+              },
+              {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^[a-zA-Z0-9._-]+$": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "condition": {
+                        "enum": [
+                          "service_started",
+                          "service_healthy",
+                          "service_completed_successfully"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "condition"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            ]
+          },
+          "deploy": {
+            "$ref": "#/definitions/deployment"
+          },
+          "device_cgroup_rules": {
+            "$ref": "#/definitions/list_of_strings"
+          },
+          "devices": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "dns": {
+            "$ref": "#/definitions/string_or_list"
+          },
+          "dns_opt": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "dns_search": {
+            "$ref": "#/definitions/string_or_list"
+          },
+          "domainname": {
+            "type": "string"
+          },
+          "entrypoint": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "env_file": {
+            "$ref": "#/definitions/string_or_list"
+          },
+          "environment": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "expose": {
+            "items": {
+              "format": "expose",
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "extends": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "service": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "service"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          "external_links": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "extra_hosts": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "group_add": {
+            "items": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "healthcheck": {
+            "$ref": "#/definitions/healthcheck"
+          },
+          "hostname": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "init": {
+            "type": "boolean"
+          },
+          "ipc": {
+            "type": "string"
+          },
+          "isolation": {
+            "type": "string"
+          },
+          "labels": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "links": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "logging": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "driver": {
+                "type": "string"
+              },
+              "options": {
+                "patternProperties": {
+                  "^.+$": {
+                    "type": [
+                      "string",
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "mac_address": {
+            "type": "string"
+          },
+          "mem_limit": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "mem_reservation": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "mem_swappiness": {
+            "type": "integer"
+          },
+          "memswap_limit": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "network_mode": {
+            "type": "string"
+          },
+          "networks": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/list_of_strings"
+              },
+              {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^[a-zA-Z0-9._-]+$": {
+                    "oneOf": [
+                      {
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^x-": {}
+                        },
+                        "properties": {
+                          "aliases": {
+                            "$ref": "#/definitions/list_of_strings"
+                          },
+                          "ipv4_address": {
+                            "type": "string"
+                          },
+                          "ipv6_address": {
+                            "type": "string"
+                          },
+                          "link_local_ips": {
+                            "$ref": "#/definitions/list_of_strings"
+                          },
+                          "priority": {
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "type": "object"
+              }
+            ]
+          },
+          "oom_kill_disable": {
+            "type": "boolean"
+          },
+          "oom_score_adj": {
+            "maximum": 1000,
+            "minimum": -1000,
+            "type": "integer"
+          },
+          "pid": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "pids_limit": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "platform": {
+            "type": "string"
+          },
+          "ports": {
+            "items": {
+              "oneOf": [
+                {
+                  "format": "ports",
+                  "type": "number"
+                },
+                {
+                  "format": "ports",
+                  "type": "string"
+                },
+                {
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^x-": {}
+                  },
+                  "properties": {
+                    "host_ip": {
+                      "type": "string"
+                    },
+                    "mode": {
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "type": "string"
+                    },
+                    "published": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    },
+                    "target": {
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "privileged": {
+            "type": "boolean"
+          },
+          "profiles": {
+            "$ref": "#/definitions/list_of_strings"
+          },
+          "pull_policy": {
+            "enum": [
+              "always",
+              "never",
+              "if_not_present",
+              "build",
+              "missing"
+            ],
+            "type": "string"
+          },
+          "read_only": {
+            "type": "boolean"
+          },
+          "restart": {
+            "type": "string"
+          },
+          "runtime": {
+            "type": "string"
+          },
+          "scale": {
+            "type": "integer"
+          },
+          "secrets": {
+            "$ref": "#/definitions/service_config_or_secret"
+          },
+          "security_opt": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "shm_size": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "stdin_open": {
+            "type": "boolean"
+          },
+          "stop_grace_period": {
+            "format": "duration",
+            "type": "string"
+          },
+          "stop_signal": {
+            "type": "string"
+          },
+          "storage_opt": {
+            "type": "object"
+          },
+          "sysctls": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "tmpfs": {
+            "$ref": "#/definitions/string_or_list"
+          },
+          "tty": {
+            "type": "boolean"
+          },
+          "ulimits": {
+            "patternProperties": {
+              "^[a-z]+$": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "hard": {
+                        "type": "integer"
+                      },
+                      "soft": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "soft",
+                      "hard"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "user": {
+            "type": "string"
+          },
+          "userns_mode": {
+            "type": "string"
+          },
+          "volumes": {
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^x-": {}
+                  },
+                  "properties": {
+                    "bind": {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "create_host_path": {
+                          "type": "boolean"
+                        },
+                        "propagation": {
+                          "type": "string"
+                        },
+                        "selinux": {
+                          "enum": [
+                            "z",
+                            "Z"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "consistency": {
+                      "type": "string"
+                    },
+                    "read_only": {
+                      "type": "boolean"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    },
+                    "tmpfs": {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "mode": {
+                          "type": "number"
+                        },
+                        "size": {
+                          "oneOf": [
+                            {
+                              "minimum": 0,
+                              "type": "integer"
+                            },
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "volume": {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "nocopy": {
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "volumes_from": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "working_dir": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "service_config_or_secret": {
+        "items": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "additionalProperties": false,
+              "patternProperties": {
+                "^x-": {}
+              },
+              "properties": {
+                "gid": {
+                  "type": "string"
+                },
+                "mode": {
+                  "type": "number"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "target": {
+                  "type": "string"
+                },
+                "uid": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          ]
+        },
+        "type": "array"
+      },
+      "string_or_list": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "$ref": "#/definitions/list_of_strings"
+          }
+        ]
+      },
+      "volume": {
+        "additionalProperties": false,
+        "id": "#/definitions/volume",
+        "patternProperties": {
+          "^x-": {}
+        },
+        "properties": {
+          "driver": {
+            "type": "string"
+          },
+          "driver_opts": {
+            "patternProperties": {
+              "^.+$": {
+                "type": [
+                  "string",
+                  "number"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "external": {
+            "additionalProperties": false,
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "name": {
+                "deprecated": true,
+                "type": "string"
+              }
+            },
+            "type": [
+              "boolean",
+              "object"
+            ]
+          },
+          "labels": {
+            "$ref": "#/definitions/list_or_dict"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "description": "The Compose file is a YAML file defining a multi-containers based application.",
+    "id": "compose_spec.json",
+    "patternProperties": {
+      "^x-": {}
+    },
+    "properties": {
+      "configs": {
+        "additionalProperties": false,
+        "id": "#/properties/configs",
+        "patternProperties": {
+          "^[a-zA-Z0-9._-]+$": {
+            "additionalProperties": false,
+            "id": "#/definitions/config",
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "external": {
+                "properties": {
+                  "name": {
+                    "deprecated": true,
+                    "type": "string"
+                  }
+                },
+                "type": [
+                  "boolean",
+                  "object"
+                ]
+              },
+              "file": {
+                "type": "string"
+              },
+              "labels": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "template_driver": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "name": {
+        "description": "define the Compose project name, until user defines one explicitly.",
+        "type": "string"
+      },
+      "networks": {
+        "id": "#/properties/networks",
+        "patternProperties": {
+          "^[a-zA-Z0-9._-]+$": {
+            "additionalProperties": false,
+            "id": "#/definitions/network",
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "attachable": {
+                "type": "boolean"
+              },
+              "driver": {
+                "type": "string"
+              },
+              "driver_opts": {
+                "patternProperties": {
+                  "^.+$": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  }
+                },
+                "type": "object"
+              },
+              "enable_ipv6": {
+                "type": "boolean"
+              },
+              "external": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "name": {
+                    "deprecated": true,
+                    "type": "string"
+                  }
+                },
+                "type": [
+                  "boolean",
+                  "object"
+                ]
+              },
+              "internal": {
+                "type": "boolean"
+              },
+              "ipam": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "config": {
+                    "items": {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "aux_addresses": {
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^.+$": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "gateway": {
+                          "type": "string"
+                        },
+                        "ip_range": {
+                          "type": "string"
+                        },
+                        "subnet": {
+                          "format": "subnet_ip_address",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "driver": {
+                    "type": "string"
+                  },
+                  "options": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^.+$": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "labels": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "secrets": {
+        "additionalProperties": false,
+        "id": "#/properties/secrets",
+        "patternProperties": {
+          "^[a-zA-Z0-9._-]+$": {
+            "additionalProperties": false,
+            "id": "#/definitions/secret",
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "driver": {
+                "type": "string"
+              },
+              "driver_opts": {
+                "patternProperties": {
+                  "^.+$": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  }
+                },
+                "type": "object"
+              },
+              "environment": {
+                "type": "string"
+              },
+              "external": {
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "type": [
+                  "boolean",
+                  "object"
+                ]
+              },
+              "file": {
+                "type": "string"
+              },
+              "labels": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "template_driver": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "services": {
+        "additionalProperties": false,
+        "id": "#/properties/services",
+        "patternProperties": {
+          "^[a-zA-Z0-9._-]+$": {
+            "additionalProperties": false,
+            "id": "#/definitions/service",
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "blkio_config": {
+                "additionalProperties": false,
+                "properties": {
+                  "device_read_bps": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": [
+                            "integer",
+                            "string"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "device_read_iops": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": [
+                            "integer",
+                            "string"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "device_write_bps": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": [
+                            "integer",
+                            "string"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "device_write_iops": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": [
+                            "integer",
+                            "string"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "weight": {
+                    "type": "integer"
+                  },
+                  "weight_device": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "weight": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              },
+              "build": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "args": {
+                        "oneOf": [
+                          {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              ".+": {
+                                "type": [
+                                  "string",
+                                  "number",
+                                  "boolean",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array",
+                            "uniqueItems": true
+                          }
+                        ]
+                      },
+                      "cache_from": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "cache_to": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "context": {
+                        "type": "string"
+                      },
+                      "dockerfile": {
+                        "type": "string"
+                      },
+                      "extra_hosts": {
+                        "oneOf": [
+                          {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              ".+": {
+                                "type": [
+                                  "string",
+                                  "number",
+                                  "boolean",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array",
+                            "uniqueItems": true
+                          }
+                        ]
+                      },
+                      "isolation": {
+                        "type": "string"
+                      },
+                      "labels": {
+                        "oneOf": [
+                          {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              ".+": {
+                                "type": [
+                                  "string",
+                                  "number",
+                                  "boolean",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array",
+                            "uniqueItems": true
+                          }
+                        ]
+                      },
+                      "network": {
+                        "type": "string"
+                      },
+                      "no_cache": {
+                        "type": "boolean"
+                      },
+                      "pull": {
+                        "type": "boolean"
+                      },
+                      "secrets": {
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^x-": {}
+                              },
+                              "properties": {
+                                "gid": {
+                                  "type": "string"
+                                },
+                                "mode": {
+                                  "type": "number"
+                                },
+                                "source": {
+                                  "type": "string"
+                                },
+                                "target": {
+                                  "type": "string"
+                                },
+                                "uid": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "type": "array"
+                      },
+                      "shm_size": {
+                        "type": [
+                          "integer",
+                          "string"
+                        ]
+                      },
+                      "ssh": {
+                        "oneOf": [
+                          {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              ".+": {
+                                "type": [
+                                  "string",
+                                  "number",
+                                  "boolean",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array",
+                            "uniqueItems": true
+                          }
+                        ]
+                      },
+                      "tags": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "target": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                ]
+              },
+              "cap_add": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "cap_drop": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "cgroup_parent": {
+                "type": "string"
+              },
+              "command": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ]
+              },
+              "configs": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "gid": {
+                          "type": "string"
+                        },
+                        "mode": {
+                          "type": "number"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "uid": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              "container_name": {
+                "type": "string"
+              },
+              "cpu_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "cpu_percent": {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "cpu_period": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "cpu_quota": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "cpu_rt_period": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "cpu_rt_runtime": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "cpu_shares": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "cpus": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "cpuset": {
+                "type": "string"
+              },
+              "credential_spec": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "config": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "registry": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "depends_on": {
+                "oneOf": [
+                  {
+                    "_name": "list_of_strings",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^[a-zA-Z0-9._-]+$": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "condition": {
+                            "enum": [
+                              "service_started",
+                              "service_healthy",
+                              "service_completed_successfully"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "condition"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                ]
+              },
+              "deploy": {
+                "additionalProperties": false,
+                "id": "#/definitions/deployment",
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "endpoint_mode": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "oneOf": [
+                      {
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          ".+": {
+                            "type": [
+                              "string",
+                              "number",
+                              "boolean",
+                              "null"
+                            ]
+                          }
+                        },
+                        "type": "object"
+                      },
+                      {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array",
+                        "uniqueItems": true
+                      }
+                    ]
+                  },
+                  "mode": {
+                    "type": "string"
+                  },
+                  "placement": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "constraints": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "max_replicas_per_node": {
+                        "type": "integer"
+                      },
+                      "preferences": {
+                        "items": {
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^x-": {}
+                          },
+                          "properties": {
+                            "spread": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "replicas": {
+                    "type": "integer"
+                  },
+                  "resources": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "limits": {
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^x-": {}
+                        },
+                        "properties": {
+                          "cpus": {
+                            "type": [
+                              "number",
+                              "string"
+                            ]
+                          },
+                          "memory": {
+                            "type": "string"
+                          },
+                          "pids": {
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "reservations": {
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^x-": {}
+                        },
+                        "properties": {
+                          "cpus": {
+                            "type": [
+                              "number",
+                              "string"
+                            ]
+                          },
+                          "devices": {
+                            "id": "#/definitions/devices",
+                            "items": {
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^x-": {}
+                              },
+                              "properties": {
+                                "capabilities": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array",
+                                  "uniqueItems": true
+                                },
+                                "count": {
+                                  "type": [
+                                    "string",
+                                    "integer"
+                                  ]
+                                },
+                                "device_ids": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array",
+                                  "uniqueItems": true
+                                },
+                                "driver": {
+                                  "type": "string"
+                                },
+                                "options": {
+                                  "oneOf": [
+                                    {
+                                      "additionalProperties": false,
+                                      "patternProperties": {
+                                        ".+": {
+                                          "type": [
+                                            "string",
+                                            "number",
+                                            "boolean",
+                                            "null"
+                                          ]
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array",
+                                      "uniqueItems": true
+                                    }
+                                  ]
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "generic_resources": {
+                            "id": "#/definitions/generic_resources",
+                            "items": {
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^x-": {}
+                              },
+                              "properties": {
+                                "discrete_resource_spec": {
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^x-": {}
+                                  },
+                                  "properties": {
+                                    "kind": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "memory": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "restart_policy": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "condition": {
+                        "type": "string"
+                      },
+                      "delay": {
+                        "format": "duration",
+                        "type": "string"
+                      },
+                      "max_attempts": {
+                        "type": "integer"
+                      },
+                      "window": {
+                        "format": "duration",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "rollback_config": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "delay": {
+                        "format": "duration",
+                        "type": "string"
+                      },
+                      "failure_action": {
+                        "type": "string"
+                      },
+                      "max_failure_ratio": {
+                        "type": "number"
+                      },
+                      "monitor": {
+                        "format": "duration",
+                        "type": "string"
+                      },
+                      "order": {
+                        "enum": [
+                          "start-first",
+                          "stop-first"
+                        ],
+                        "type": "string"
+                      },
+                      "parallelism": {
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "update_config": {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^x-": {}
+                    },
+                    "properties": {
+                      "delay": {
+                        "format": "duration",
+                        "type": "string"
+                      },
+                      "failure_action": {
+                        "type": "string"
+                      },
+                      "max_failure_ratio": {
+                        "type": "number"
+                      },
+                      "monitor": {
+                        "format": "duration",
+                        "type": "string"
+                      },
+                      "order": {
+                        "enum": [
+                          "start-first",
+                          "stop-first"
+                        ],
+                        "type": "string"
+                      },
+                      "parallelism": {
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "device_cgroup_rules": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "devices": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "dns": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "_name": "list_of_strings",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "dns_opt": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "dns_search": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "_name": "list_of_strings",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "domainname": {
+                "type": "string"
+              },
+              "entrypoint": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ]
+              },
+              "env_file": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "_name": "list_of_strings",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "environment": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "expose": {
+                "items": {
+                  "format": "expose",
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "extends": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "file": {
+                        "type": "string"
+                      },
+                      "service": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "service"
+                    ],
+                    "type": "object"
+                  }
+                ]
+              },
+              "external_links": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "extra_hosts": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "group_add": {
+                "items": {
+                  "type": [
+                    "string",
+                    "number"
+                  ]
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "healthcheck": {
+                "additionalProperties": false,
+                "id": "#/definitions/healthcheck",
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "disable": {
+                    "type": "boolean"
+                  },
+                  "interval": {
+                    "format": "duration",
+                    "type": "string"
+                  },
+                  "retries": {
+                    "type": "number"
+                  },
+                  "start_period": {
+                    "format": "duration",
+                    "type": "string"
+                  },
+                  "test": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    ]
+                  },
+                  "timeout": {
+                    "format": "duration",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "hostname": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "init": {
+                "type": "boolean"
+              },
+              "ipc": {
+                "type": "string"
+              },
+              "isolation": {
+                "type": "string"
+              },
+              "labels": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "links": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "logging": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "driver": {
+                    "type": "string"
+                  },
+                  "options": {
+                    "patternProperties": {
+                      "^.+$": {
+                        "type": [
+                          "string",
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "mac_address": {
+                "type": "string"
+              },
+              "mem_limit": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "mem_reservation": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "mem_swappiness": {
+                "type": "integer"
+              },
+              "memswap_limit": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "network_mode": {
+                "type": "string"
+              },
+              "networks": {
+                "oneOf": [
+                  {
+                    "_name": "list_of_strings",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^[a-zA-Z0-9._-]+$": {
+                        "oneOf": [
+                          {
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^x-": {}
+                            },
+                            "properties": {
+                              "aliases": {
+                                "items": {
+                                  "type": "string"
+                                },
+                                "type": "array",
+                                "uniqueItems": true
+                              },
+                              "ipv4_address": {
+                                "type": "string"
+                              },
+                              "ipv6_address": {
+                                "type": "string"
+                              },
+                              "link_local_ips": {
+                                "items": {
+                                  "type": "string"
+                                },
+                                "type": "array",
+                                "uniqueItems": true
+                              },
+                              "priority": {
+                                "type": "number"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  }
+                ]
+              },
+              "oom_kill_disable": {
+                "type": "boolean"
+              },
+              "oom_score_adj": {
+                "maximum": 1000,
+                "minimum": -1000,
+                "type": "integer"
+              },
+              "pid": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "pids_limit": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "platform": {
+                "type": "string"
+              },
+              "ports": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "format": "ports",
+                      "type": "number"
+                    },
+                    {
+                      "format": "ports",
+                      "type": "string"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "host_ip": {
+                          "type": "string"
+                        },
+                        "mode": {
+                          "type": "string"
+                        },
+                        "protocol": {
+                          "type": "string"
+                        },
+                        "published": {
+                          "type": [
+                            "string",
+                            "integer"
+                          ]
+                        },
+                        "target": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "privileged": {
+                "type": "boolean"
+              },
+              "profiles": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "pull_policy": {
+                "enum": [
+                  "always",
+                  "never",
+                  "if_not_present",
+                  "build",
+                  "missing"
+                ],
+                "type": "string"
+              },
+              "read_only": {
+                "type": "boolean"
+              },
+              "restart": {
+                "type": "string"
+              },
+              "runtime": {
+                "type": "string"
+              },
+              "scale": {
+                "type": "integer"
+              },
+              "secrets": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "gid": {
+                          "type": "string"
+                        },
+                        "mode": {
+                          "type": "number"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "uid": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              "security_opt": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "shm_size": {
+                "type": [
+                  "number",
+                  "string"
+                ]
+              },
+              "stdin_open": {
+                "type": "boolean"
+              },
+              "stop_grace_period": {
+                "format": "duration",
+                "type": "string"
+              },
+              "stop_signal": {
+                "type": "string"
+              },
+              "storage_opt": {
+                "type": "object"
+              },
+              "sysctls": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "tmpfs": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "_name": "list_of_strings",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "tty": {
+                "type": "boolean"
+              },
+              "ulimits": {
+                "patternProperties": {
+                  "^[a-z]+$": {
+                    "oneOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^x-": {}
+                        },
+                        "properties": {
+                          "hard": {
+                            "type": "integer"
+                          },
+                          "soft": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "soft",
+                          "hard"
+                        ],
+                        "type": "object"
+                      }
+                    ]
+                  }
+                },
+                "type": "object"
+              },
+              "user": {
+                "type": "string"
+              },
+              "userns_mode": {
+                "type": "string"
+              },
+              "volumes": {
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^x-": {}
+                      },
+                      "properties": {
+                        "bind": {
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^x-": {}
+                          },
+                          "properties": {
+                            "create_host_path": {
+                              "type": "boolean"
+                            },
+                            "propagation": {
+                              "type": "string"
+                            },
+                            "selinux": {
+                              "enum": [
+                                "z",
+                                "Z"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "consistency": {
+                          "type": "string"
+                        },
+                        "read_only": {
+                          "type": "boolean"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "tmpfs": {
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^x-": {}
+                          },
+                          "properties": {
+                            "mode": {
+                              "type": "number"
+                            },
+                            "size": {
+                              "oneOf": [
+                                {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "volume": {
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^x-": {}
+                          },
+                          "properties": {
+                            "nocopy": {
+                              "type": "boolean"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "volumes_from": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "working_dir": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "version": {
+        "description": "declared for backward compatibility, ignored.",
+        "type": "string"
+      },
+      "volumes": {
+        "additionalProperties": false,
+        "id": "#/properties/volumes",
+        "patternProperties": {
+          "^[a-zA-Z0-9._-]+$": {
+            "additionalProperties": false,
+            "id": "#/definitions/volume",
+            "patternProperties": {
+              "^x-": {}
+            },
+            "properties": {
+              "driver": {
+                "type": "string"
+              },
+              "driver_opts": {
+                "patternProperties": {
+                  "^.+$": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  }
+                },
+                "type": "object"
+              },
+              "external": {
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^x-": {}
+                },
+                "properties": {
+                  "name": {
+                    "deprecated": true,
+                    "type": "string"
+                  }
+                },
+                "type": [
+                  "boolean",
+                  "object"
+                ]
+              },
+              "labels": {
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      ".+": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        },
+        "type": "object"
+      }
+    },
+    "title": "Compose Specification",
+    "type": "object"
+  }
+}
+
